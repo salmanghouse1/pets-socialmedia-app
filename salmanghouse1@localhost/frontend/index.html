@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Full-Stack React App with AutoCAD Integration</title>
+  <meta name="description" content="Learn how to create a full-stack React application integrated with AutoCAD commands. Follow our step-by-step guide for backend setup with Node.js, frontend development with React.js, and seamless integration with AutoCAD using the AutoCAD API.">
+<style>
+  h1{
+font-family:Arial;
+color: #fff;
+  }
+  h2{
+    color: #fff;
+
+    font-family:Arial;
+  }
+  body{
+    background-color: black;
+  }
+  code{
+    background-color: black;
+    border-radius: 25px;
+    color:green;
+
+  }
+  p{
+color:white;
+font-family:Verdana, Geneva, Tahoma, sans-serif;
+  
+font-family:Verdana, Geneva, Tahoma, sans-serif
+  }
+</style>
+</head>
+<body>
+  <h1>Steps to Building a Full-Stack React App with AutoCAD Integration</h1>
+
+  <h2>Backend Setup (Node.js with Express)</h2>
+  <pre><code class="language-javascript">
+    const express = require('express');
+    const app = express();
+    const port = 3001;
+
+    // Define API endpoints
+    app.get('/autocad/commands', (req, res) => {
+      // Handle AutoCAD commands here
+      res.json({ message: 'Received AutoCAD commands' });
+    });
+
+    // Start the server
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  </code></pre>
+
+  <h2>Frontend Setup (React.js)</h2>
+  <pre><code class="language-javascript">
+    import React, { useState } from 'react';
+    import axios from 'axios';
+
+    function App() {
+      const [command, setCommand] = useState('');
+
+      const sendCommand = () => {
+        axios.get('http://localhost:3001/autocad/commands', {
+          params: {
+            command: command
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error('Error sending command:', error);
+        });
+      };
+
+      return (
+        <div className="App">
+          <h1>AutoCAD Command Sender</h1>
+          <input type="text" value={command} onChange={(e) => setCommand(e.target.value)} />
+          <button onClick={sendCommand}>Send Command</button>
+        </div>
+      );
+    }
+
+    export default App;
+  </code></pre>
+
+  <h2>AutoCAD Integration</h2>
+  <pre><code class="language-csharp">
+    using Autodesk.AutoCAD.ApplicationServices;
+    using Autodesk.AutoCAD.DatabaseServices;
+    using Autodesk.AutoCAD.EditorInput;
+
+    namespace AutoCADIntegration
+    {
+        public class AutoCADCommands
+        {
+            public static void ExecuteCommand(string command)
+            {
+                Document doc = Application.DocumentManager.MdiActiveDocument;
+                Editor ed = doc.Editor;
+
+                using (Transaction tr = doc.TransactionManager.StartTransaction())
+                {
+                    BlockTable bt = (BlockTable)tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead);
+                    BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+
+                    btr.AppendEntity(new Line(new Point3d(0, 0, 0), new Point3d(10, 10, 0)));
+                    tr.AddNewlyCreatedDBObject(new Line(new Point3d(0, 0, 0), new Point3d(10, 10, 0)), true);
+
+                    tr.Commit();
+                }
+            }
+        }
+    }
+  </code></pre>
+
+  <h2>Integrating AutoCAD Commands in Backend</h2>
+  <pre><code class="language-javascript">
+    const express = require('express');
+    const app = express();
+    const port = 3001;
+    const AutoCADCommands = require('./AutoCADCommands');
+
+    // Define API endpoints
+    app.get('/autocad/commands', (req, res) => {
+      const command = req.query.command;
+      AutoCADCommands.executeCommand(command);
+      res.json({ message: 'Command sent to AutoCAD' });
+    });
+
+    // Start the server
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  </code></pre>
+</body>
+</html>
