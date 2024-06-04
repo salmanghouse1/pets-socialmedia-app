@@ -1,67 +1,74 @@
 // src/components/Dashboard.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 
 const Dashboard = () => {
-    const [posts, setPosts] = useState([]);
-    const [formData, setFormData] = useState({
-        text: '',
-        image: ''
-    });
+  const [posts, setPosts] = useState([]);
+  const [formData, setFormData] = useState({
+    text: '',
+    image: ''
+  });
 
-    const { text, image } = formData;
+  const { text, image } = formData;
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            const res = await axios.get('/api/posts');
-            setPosts(res.data);
-        };
-        fetchPosts();
-    }, []);
-
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    const onSubmit = async e => {
-        e.preventDefault();
-        const token = localStorage.getItem('token');
-        const decoded = jwtDecode(token);
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-        const body = { text, image, user: decoded.user.id };
-
-        try {
-            const res = await axios.post('/api/posts', body, config);
-            setPosts([res.data, ...posts]);
-        } catch (err) {
-            console.error(err.response.data);
-        }
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const res = await axios.get('/api/posts');
+      setPosts(res.data);
     };
+    fetchPosts();
+  }, []);
 
-    return (
-        <div>
-            <form onSubmit={e => onSubmit(e)}>
-                <div>
-                    <label>Text</label>
-                    <input type="text" name="text" value={text} onChange={e => onChange(e)} />
-                </div>
-                <div>
-                    <label>Image URL</label>
-                    <input type="text" name="image" value={image} onChange={e => onChange(e)} />
-                </div>
-                <button type="submit">Post</button>
-            </form>
-            <div>
-                {posts.map(post => (
-                    <div key={post._id}>
-                        <h3>{post.text}</h3>
-                        {post.image && <img src={post.image} alt="Post" />}
-                    </div>
-                ))}
+  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    const body = { text, image };
+
+    try {
+      const res = await axios.post('/api/posts', body, config);
+      setPosts([res.data, ...posts]);
+    } catch (err) {
+      console.error(err.response.data);
+    }
+  };
+
+  return (
+    <section className="section">
+      <div className="container">
+        <h1 className="title">Dashboard</h1>
+        <form onSubmit={onSubmit}>
+          <div className="field">
+            <label className="label">Text</label>
+            <div className="control">
+              <input className="input" type="text" name="text" value={text} onChange={onChange} required />
             </div>
+          </div>
+          <div className="field">
+            <label className="label">Image URL</label>
+            <div className="control">
+              <input className="input" type="text" name="image" value={image} onChange={onChange} />
+            </div>
+          </div>
+          <div className="control">
+            <button className="button is-primary" type="submit">Post</button>
+          </div>
+        </form>
+        <div className="posts">
+          {posts.map(post => (
+            <div key={post._id} className="box">
+              <p>{post.text}</p>
+              {post.image && <img src={post.image} alt="Post" />}
+            </div>
+          ))}
         </div>
-    );
+      </div>
+    </section>
+  );
 };
 
 export default Dashboard;

@@ -4,11 +4,18 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+const mongoURI = process.env.MONGO_URI;
 
-mongoose.connect(process.env.MONGO_URI, {
+console.log(mongoURI);
+if (!mongoURI) {
+  console.error('Mongo URI is not defined');
+  process.exit(1); // Exit the process if the URI is not defined
+}
+mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected'))
