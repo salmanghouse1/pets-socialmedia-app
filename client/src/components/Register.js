@@ -33,19 +33,19 @@ const Register = () => {
           <div className="field">
             <label className="label">Username</label>
             <div className="control">
-              <input className="input" type="text" name="username" value={username} onChange={e => onChange(e)} />
+              <input className="input" type="text" name="username" value={username} onChange={e => onChange(e.target.value)} />
             </div>
           </div>
           <div className="field">
             <label className="label">Email</label>
             <div className="control">
-              <input className="input" type="email" name="email" value={email} onChange={e => onChange(e)} />
+              <input className="input" type="email" name="email" value={email} onChange={e => onChange(e.target.value)} />
             </div>
           </div>
           <div className="field">
             <label className="label">Password</label>
             <div className="control">
-              <input className="input" type="password" name="password" value={password} onChange={e => onChange(e)} />
+              <input className="input" type="password" name="password" value={password} onChange={e => onChange(e.target.value)} />
             </div>
           </div>
           <div className="control">

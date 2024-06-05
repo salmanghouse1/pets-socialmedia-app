@@ -7,22 +7,30 @@ const router = express.Router();
 
 // Authentication route
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        let user = await User.findOne({ email });
-        if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
+   
+    const {email,password}=req.body;
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
+    if(!email||!password){
+        throw Error('All fields must be filled');
 
-        const payload = { user: { id: user.id } };
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
-            if (err) throw err;
-            res.json({ token });
-        });
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+    };
+
+
+
+    const user =await findOne({email});
+
+    if(!user){
+        throw Error('Incorrect Email');
+    };
+
+    const match = await bcrypt.compare(password,user.password);
+
+        if(!match){
+throw Error('Incorrect Password');
+        };
+
+        return user;
+
 });
 
 module.exports = router;
