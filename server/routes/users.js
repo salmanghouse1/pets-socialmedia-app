@@ -4,7 +4,16 @@ const createToken =require('./../utils/token');
 const User = require('../models/User');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+require('dotenv').config;
 
+
+createToken=(_id)=>{
+jwt.sign({_id},process.env.JWT_SECRET,{expiresIn:'3d'});
+}
+
+const loginUser=async(req,res)=>{
+
+}
 
 // Registration route
 router.post('/register', async (req, res) => {
