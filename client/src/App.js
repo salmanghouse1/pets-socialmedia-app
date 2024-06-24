@@ -7,9 +7,18 @@ import Home from './components/Home';
 import Register from './components/Register';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-
+import PostList from './Post/PostList';
 
 const App = () => {
+
+  const [auth, setAuth] = useState(localStorage.getItem('token') || null);
+
+  const handleAuth = (token) => {
+      localStorage.setItem('token', token);
+      setAuth(token);
+  };
+
+
   return (
     <BrowserRouter>
       <Routes>

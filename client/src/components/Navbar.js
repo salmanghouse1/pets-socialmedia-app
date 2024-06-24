@@ -3,6 +3,17 @@ import { Link,Outlet } from 'react-router-dom';
 
 
 const Navbar = () => {
+  const {logout}=useLogout()
+
+
+const handleClick = ()=>{
+  logout()
+}
+
+
+
+
+
   return (
 <>
     <nav className="navbar is-primary">
@@ -19,6 +30,10 @@ const Navbar = () => {
           <Link className="navbar-item" to="/login">
             Login
           </Link>
+          <Link className="navbar-item" to="/logout">
+            Logout
+          </Link>
+
           <Link className="navbar-item" to="/dashboard">
             Dashboard
           </Link>

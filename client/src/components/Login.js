@@ -6,33 +6,27 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-      username:'',  
-      email: '',
-        password: ''
-    });
+   const [email,setEmail]=useState('');
 
-    const { email, password } = formData;
+    const [password,setPassword]=useState('');
+
+
     const history = useNavigate();
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = async e => {
+    const onHandleSubmit = async e => {
         e.preventDefault();
-        try {
-            const res = await axios.post('/api/auth/login', formData);
-            localStorage.setItem('token', res.data.token);
-            history.push('/dashboard');
-        } catch (err) {
-            console.error(err.response.data);
-        }
-    };
+       
+
+
+      };
 
     return (
         <section className="section">
       <div className="container">
         <h1 className="title">Login</h1>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onHandleSubmit}>
         <div className="field">
             <label className="label">Username</label>
             <div className="control">
@@ -42,13 +36,13 @@ const Login = () => {
           <div className="field">
             <label className="label">Email</label>
             <div className="control">
-              <input className="input" type="email" name="email" value={email} onChange={onChange} required />
+              <input className="input" type="email" name="email" value={email} onChange={setEmail(e.target.value)} required />
             </div>
           </div>
           <div className="field">
             <label className="label">Password</label>
             <div className="control">
-              <input className="input" type="password" name="password" value={password} onChange={onChange} required />
+              <input className="input" type="password" name="password" value={password} onChange={setPassword(e.target.value)} required />
             </div>
           </div>
           <div className="control">

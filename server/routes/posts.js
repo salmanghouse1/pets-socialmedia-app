@@ -20,7 +20,8 @@ router.post('/', [auth, [
         const newPost = new Post({
             text: req.body.text,
             user: req.user.id,
-            image: req.body.image
+            image: req.body.image,
+            paypal:user_id
         });
 
         const post = await newPost.save();
