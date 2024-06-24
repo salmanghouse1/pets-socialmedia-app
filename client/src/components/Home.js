@@ -8,7 +8,7 @@ import { WidgetLoader, Widget } from 'react-cloudinary-upload-widget';
 const [petName, setPetName] = useState('');
 const [petType, setPetType] = useState('dog');
 const [imageURL, setImageURL] = useState('');
-
+const [paypalemail,setPaypalEmail]=useState('');
 
 const Home = () => {
 
@@ -25,12 +25,13 @@ const Home = () => {
       imageURL,
     });
 
-    axios.post('api/posts', { text:petName,user:petType,image:imageURL });
+    axios.post('api/posts', { text:petName,user:petType,image:imageURL,paypalUserid:paypalUserid });
 
   };
 
 
   return (
+    <>
     <section className="section">
       <div className="container">
         <h1 className="title">Welcome to Pet Social Media</h1>
@@ -48,8 +49,16 @@ const Home = () => {
           value={petName}
           onChange={(e) => setPetName(e.target.value)}
           required
-        /><br /><br />
-
+          /><br /><br />
+<label htmlFor="pet-name">Paypal User id</label>
+        <input
+          type="text"
+          id="pet-name"
+          name="paypalUserEmail"
+          value={paypalemail}
+          onChange={(e) => setPetName(e.target.value)}
+          required
+          />
         <label htmlFor="pet-type">Type of Pet:</label>
         <select
           id="pet-type"
@@ -57,7 +66,7 @@ const Home = () => {
           value={petType}
           onChange={(e) => setPetType(e.target.value)}
           required
-        >
+          >
           <option value="dog">Dog</option>
           <option value="cat">Cat</option>
           <option value="bird">Bird</option>
@@ -84,7 +93,7 @@ const Home = () => {
             cropping={false}
             onSuccess={handleUploadSuccess}
             onFailure={(error) => console.log(error)}
-          />
+            />
         </CloudinaryContext>
 
         {imageURL && (
@@ -95,7 +104,7 @@ const Home = () => {
               publicId={imageURL}
               width="300"
               crop="scale"
-            />
+              />
           </div>
         )}
 
@@ -103,17 +112,11 @@ const Home = () => {
         <button type="submit">Submit</button>
       </form>
     </div>
-
-  );
-
-
-export default PetPostForm;
-
       </div>
-      <>
       <PostList></PostList>
-      </>
     </section>
+        </>
+    
   );
 };
 
