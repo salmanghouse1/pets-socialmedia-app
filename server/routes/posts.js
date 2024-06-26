@@ -21,7 +21,7 @@ router.post('/', [auth, [
             text: req.body.text,
             user: req.user.id,
             image: req.body.image,
-            paypal:user_id
+            paypalUserid:req.body.paypaluser_id
         });
 
         const post = await newPost.save();

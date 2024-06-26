@@ -1,5 +1,5 @@
 // src/App.js
-import React from 'react';
+import React,{useState} from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import NoPage from './components/NoPage';
@@ -7,7 +7,7 @@ import Home from './components/Home';
 import Register from './components/Register';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import PostList from './Post/PostList';
+
 
 const App = () => {
 

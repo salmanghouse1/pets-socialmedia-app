@@ -1,17 +1,16 @@
-import React from 'react';
-import PostList from './PostList';
-import React, { useState } from 'react';
+import React,{useState} from 'react';
+import PostList from './Posts/PostList';
 import { CloudinaryContext, Image } from 'cloudinary-react';
 import { WidgetLoader, Widget } from 'react-cloudinary-upload-widget';
+import axios from 'axios';
 
 
-const [petName, setPetName] = useState('');
-const [petType, setPetType] = useState('dog');
-const [imageURL, setImageURL] = useState('');
-const [paypalemail,setPaypalEmail]=useState('');
 
 const Home = () => {
-
+  const [petName, setPetName] = useState('');
+  const [petType, setPetType] = useState('dog');
+  const [imageURL, setImageURL] = useState('');
+  const [paypalemail,setPaypalEmail]=useState('');
   const handleUploadSuccess = (result) => {
     setImageURL(result.info.secure_url);
   };
@@ -23,9 +22,10 @@ const Home = () => {
       petName,
       petType,
       imageURL,
+      paypalemail
     });
 
-    axios.post('api/posts', { text:petName,user:petType,image:imageURL,paypalUserid:paypalUserid });
+    axios.post('api/posts', { text:petName,user:petType,image:imageURL,paypalUserid:paypalemail });
 
   };
 
@@ -56,7 +56,7 @@ const Home = () => {
           id="pet-name"
           name="paypalUserEmail"
           value={paypalemail}
-          onChange={(e) => setPetName(e.target.value)}
+          onChange={(e) => setPaypalEmail(e.target.value)}
           required
           />
         <label htmlFor="pet-type">Type of Pet:</label>
@@ -113,6 +113,9 @@ const Home = () => {
       </form>
     </div>
       </div>
+     <>
+    
+     </>
       <PostList></PostList>
     </section>
         </>

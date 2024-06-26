@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 const donationRoutes = require('./routes/donationRoutes');
+const authRoutes = require('./routes/auth');
+const postRoutes=require('./routes/posts');
 
 const app = express();
 app.use(cors());
@@ -18,8 +20,7 @@ if (!mongoURI) {
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
+    
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
@@ -38,7 +39,3 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 
 
-mongoose.connect(DB, {
-}).then(() => console.log('DB connection successful'));
-
-const port = process.env.PORT || 3000

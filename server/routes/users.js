@@ -4,12 +4,12 @@ const createToken =require('./../utils/token');
 const User = require('../models/User');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const Stripe = require('stripe');
+
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
 
 
 
@@ -38,13 +38,6 @@ router.post('/register', async (req, res) => {
 });
 
 
-router.get('/api/account', async (req, res) => {
-    try {
-        const account = await stripe.accounts.retrieve();
-        res.json({ accountId: account.id });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+
 
 module.exports = router;

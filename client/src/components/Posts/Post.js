@@ -5,7 +5,7 @@ const Post = ({ post }) => (
     <div className="post">
         <h2>{post.user.username}</h2>
         <p>{post.content}</p>
-        <DonationForm receiverId={post.user._id} />
+        <DonationForm receiverId={post.user.DonationForm} />
     </div>
 );
 

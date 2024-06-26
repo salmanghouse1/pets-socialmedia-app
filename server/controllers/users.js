@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { findOne } = require('./userModel'); // Assuming you have a userModel with a findOne method
+const { findOne } = require('../models/User'); // Assuming you have a userModel with a findOne method
 
 const UserController = async (email, password) => {
     if (!email || !password) {

@@ -7,20 +7,27 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
    const [email,setEmail]=useState('');
+   const [username,setUsername]=useState('');
 
     const [password,setPassword]=useState('');
+    const {login, error, isLoading} = useLogin()
 
+    
 
-    const history = useNavigate();
-
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
+    
+    
     const onHandleSubmit = async e => {
         e.preventDefault();
-       
+   
+        
+      await login(email, password)
 
 
-      };
+
+    }   
+
+
+      
 
     return (
         <section className="section">
@@ -30,23 +37,27 @@ const Login = () => {
         <div className="field">
             <label className="label">Username</label>
             <div className="control">
-              <input className="input" type="username" name="username" value={username} onChange={onChange} required />
+            <input 
+        type="email" 
+        onChange={(e) => setEmail(e.target.value)} 
+        value={email} 
+      />
             </div>
           </div>
-          <div className="field">
-            <label className="label">Email</label>
-            <div className="control">
-              <input className="input" type="email" name="email" value={email} onChange={setEmail(e.target.value)} required />
-            </div>
-          </div>
+          
           <div className="field">
             <label className="label">Password</label>
             <div className="control">
-              <input className="input" type="password" name="password" value={password} onChange={setPassword(e.target.value)} required />
+            <input 
+        type="password" 
+        onChange={(e) => setPassword(e.target.value)} 
+        value={password} 
+      />
             </div>
           </div>
           <div className="control">
-            <button className="button is-primary" type="submit">Login</button>
+          <button disabled={isLoading}>Log in</button>
+          {error && <div className="error">{error}</div>}
           </div>
         </form>
       </div>

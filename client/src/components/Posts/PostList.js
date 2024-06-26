@@ -7,8 +7,8 @@ const PostList = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const res = await axios.get('/api/v1/posts');
-            setPosts(res.data.data.posts);
+            const res = await axios.get('/api/posts');
+            setPosts(res.data.posts);
         };
 
         fetchPosts();

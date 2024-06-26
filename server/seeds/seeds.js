@@ -5,17 +5,6 @@ require('dotenv').config();
 const User = require('../models/User');
 const Post = require('../models/Post');
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('MongoDB connected');
-}).catch(err => {
-  console.log('MongoDB connection error:', err);
-});
-
-// Seed Data
 const users = [
   {
     username: 'user1',
@@ -25,7 +14,8 @@ const users = [
   {
     username: 'user2',
     email: 'user2@example.com',
-    password: bcrypt.hashSync('password2', 10)
+    password: bcrypt.hashSync('password2', 10),
+    paypalEmail:'salmanghouse1@gmail.com'
   }
 ];
 
@@ -33,16 +23,18 @@ const posts = [
   {
     text: 'This is the first post',
     image: 'https://via.placeholder.com/150',
-    user: null // to be set later
+    user: 'user2',
+    paypalEmail:'user2@gmail.com' // to be set later
   },
   {
     text: 'This is the second post',
     image: 'https://via.placeholder.com/150',
-    user: null // to be set later
+    user: 'user1',
+    paypalEmail:'salmanghouse1@gmail.com'
+    // to be set later
   }
 ];
 
-// Insert Seed Data
 const seedDatabase = async () => {
   try {
     // Clear existing data
@@ -66,5 +58,24 @@ const seedDatabase = async () => {
     mongoose.connection.close();
   }
 };
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+    
+  
+  serverSelectionTimeoutMS: 300000, 
+    socketTimeoutMS: 450000,         
+}).then(() => {
+  console.log('MongoDB connected');
 
-seedDatabase();
+  // Insert Seed Data
+  
+  seedDatabase();
+}).catch(err => {
+  console.log('MongoDB connection error:', err);
+});
+
+// Seed Data
+
+
+

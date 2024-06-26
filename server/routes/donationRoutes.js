@@ -3,7 +3,9 @@ const { sendDonation, executeDonation } = require('../controllers/donationContro
 
 const router = express.Router();
 
-router.post('/send-donation', protect, sendDonation);
-router.get('/execute-donation', protect, executeDonation);
+
+// send the donation
+router.post('/send-donation', sendDonation);
+router.get('/execute-donation', executeDonation);
 
 module.exports = router;
