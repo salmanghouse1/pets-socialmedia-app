@@ -1,26 +1,42 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState,onChange,setAuth,error } from 'react';
+
 
 
 
 
 const Register = () => {
-  const [email,setEmail]=useState('')
-  const [password,setPassword]=useState('')
-  const [paypalEmail,setPaypalEmail]=useState('')
+  const [email,setEmail]=useState('');
+  const [username,setUsername]=useState('');
+  const [password,setPassword]=useState('');
+  const [paypalEmail,setPaypalEmail]=useState('');
 
   const onSubmit = async e => {
     e.preventDefault();
 setEmail(email);
 setPassword(password);
 setPaypalEmail(paypalEmail);
+e.preventDefault();
+        
 try {
-  const res = await axios.post('users/register', { email,username, password, paypalEmail });
-  setAuth(res.data.token);
+    const response = await fetch('users/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, username, password, paypalEmail })
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+    }
+
+    const data = await response.json();
+    setAuth(data.token);
 } catch (err) {
-  console.error(err);
+    error('There was an error making the request: ' + err.message);
 }
-  };
+};
+
 
   return (
     <section className="section">
@@ -28,15 +44,15 @@ try {
         <h1 className="title">Register</h1>
         <form onSubmit={e => onSubmit(e)}>
           <div className="field">
-            <label className="label">Email</label>
+            <label className="label">Username</label>
             <div className="control">
-              <input className="input" type="email" name="email" value={email} onChange={e => onChange(e.target.value)} />
+              <input className="input" type="username" name="username" value={username} onChange={e => onChange(e.target.value)} />
             </div>
           </div>
           <div className="field">
-            <label className="label">Username</label>
+            <label className="label">Email</label>
             <div className="control">
-              <input className="input" type="email" name="username" value={username} onChange={e => onChange(e.target.value)} />
+              <input className="input" type="email" name="email" value={email} onChange={e => onChange(e.target.value)} />
             </div>
           </div>
           <div className="field">
@@ -49,7 +65,7 @@ try {
           <div className="field">
             <label className="label">Paypal Email(to reveive Donations)</label>
             <div className="control">
-          <input type="email" placeholder="PayPal Email" value={paypalEmail} onChange={e => oChange(e.target.value)} />
+          <input type="email" placeholder="PayPal Email" value={paypalEmail} onChange={e => onChange(e.target.value)} />
             </div>
           </div>
           <div className="control">

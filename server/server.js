@@ -6,6 +6,8 @@ require('dotenv').config();
 const donationRoutes = require('./routes/donationRoutes');
 const authRoutes = require('./routes/auth');
 const postRoutes=require('./routes/posts');
+const uploadRouter = require('./routes/upload');
+const userRouter = require('./routes/users');
 
 const app = express();
 app.use(cors());
@@ -17,6 +19,8 @@ if (!mongoURI) {
   console.error('Mongo URI is not defined');
   process.exit(1); // Exit the process if the URI is not defined
 }
+
+
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -26,14 +30,14 @@ mongoose.connect(mongoURI, {
 
  
 // Define routes
-app.use('/api/users', require('./routes/users'));
-
+app.use('/users', userRouter);
+app.use('/upload', uploadRouter);
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/donations', donationRoutes);
 app.use('/api/v1/posts', postRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 

@@ -38,10 +38,11 @@ const posts = [
 const seedDatabase = async () => {
   try {
     // Clear existing data
-    await User.deleteMany({});
-    await Post.deleteMany({});
+    await User.deleteMany({}).then(()=>console.log("deleted users"));
+    await Post.deleteMany({}).then(()=>console.log("deleted Posts"));
 
     // Insert users
+    console.log("starting seeding")
     const createdUsers = await User.insertMany(users);
 
     // Assign user to posts

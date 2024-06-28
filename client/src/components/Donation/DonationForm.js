@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 
 const DonationForm = ({ receiverId }) => {
     const [amount, setAmount] = useState('');
@@ -7,10 +7,22 @@ const DonationForm = ({ receiverId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('/api/v1/donations/send-donation', { amount, receiverId });
-            window.location.href = res.data.forwardLink;
+            const response = await fetch('/api/v1/donations/send-donation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ amount, receiverId })
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+    
+            const data = await response.json();
+            return data;
         } catch (err) {
-            console.error(err);
+            console.error('There was an error making the request:', err);
         }
     };
 

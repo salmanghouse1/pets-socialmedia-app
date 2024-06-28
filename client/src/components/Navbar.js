@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link,Outlet } from 'react-router-dom';
-
+import {useLogout} from '../hooks/useLogout';
 
 const Navbar = () => {
-  const {logout}=useLogout()
+  const {logout}=useLogout();
 
 
 const handleClick = ()=>{
-  logout()
-}
+  logout();
+};
 
 
 

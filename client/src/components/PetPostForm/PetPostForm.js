@@ -1,28 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import  from '';
+import ImageUpload from './PetImageUpload';
 
 const PetPostForm = () => {
   const [petName, setPetName] = useState('');
   const [petType, setPetType] = useState('dog');
   const [imageURL, setImageURL] = useState('');
 
-  const openWidget = () => {
-    window.cloudinary.openUploadWidget(
-      { 
-        cloudName: 'your-cloudinary-cloud-name', 
-        uploadPreset: 'your-upload-preset',
-        sources: ['local', 'url'],
-        folder: 'pet-posts'
-      },
-      (error, result) => {
-        if (!error && result && result.event === 'success') {
-          setImageURL(result.info.secure_url);
-        } else {
-          console.error(error);
-        }
-      }
-    );
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,7 +17,7 @@ const PetPostForm = () => {
     };
 
     try {
-      const response = await axios.post('', postData, {
+      const response = await .post('', postData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -75,14 +59,8 @@ const PetPostForm = () => {
           <option value="other">Other</option>
         </select><br /><br />
 
-        <button type="button" onClick={openWidget}>Upload Image</button>
-
-        {imageURL && (
-          <div>
-            <h2>Uploaded Image:</h2>
-            <img src={imageURL} alt="Uploaded" width="300" />
-          </div>
-        )}
+        <ImageUpload></ImageUpload>
+        
 
         <br /><br />
         <button type="submit">Submit</button>

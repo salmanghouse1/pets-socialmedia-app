@@ -1,8 +1,7 @@
 import React,{useState} from 'react';
 import PostList from './Posts/PostList';
-import { CloudinaryContext, Image } from 'cloudinary-react';
-import { WidgetLoader, Widget } from 'react-cloudinary-upload-widget';
-import axios from 'axios';
+
+
 
 
 
@@ -11,6 +10,8 @@ const Home = () => {
   const [petType, setPetType] = useState('dog');
   const [imageURL, setImageURL] = useState('');
   const [paypalemail,setPaypalEmail]=useState('');
+  const [image_data,setImage_data] =useState('');
+const [image_hash,setImage_hash]= useState('');
   const handleUploadSuccess = (result) => {
     setImageURL(result.info.secure_url);
   };
@@ -25,8 +26,30 @@ const Home = () => {
       paypalemail
     });
 
-    axios.post('api/posts', { text:petName,user:petType,image:imageURL,paypalUserid:paypalemail });
+    fetch('/api/v1/posts/send', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          text: petName,
+          user: petType,
+          image: imageURL,
+          paypalUserid: paypalemail,
+          image_data:image_data,
+          image_hash:image_hash,
 
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log(data);
+  })
+  .catch(error => {
+      console.error('There was an error making the request:', error);
+  });
+  
+  
   };
 
 
@@ -73,38 +96,12 @@ const Home = () => {
           <option value="other">Other</option>
         </select><br /><br />
 
-        <CloudinaryContext cloudName="your-cloudinary-cloud-name">
-          <WidgetLoader />
-          <Widget
-            sources={['local', 'url']}
-            resourceType={'image'}
-            cloudName={'your-cloudinary-cloud-name'}
-            uploadPreset={'your-upload-preset'}
-            buttonText={'Upload Image'}
-            style={{
-              color: 'white',
-              border: 'none',
-              width: '120px',
-              backgroundColor: '#1a73e8',
-              borderRadius: '4px',
-              height: '30px',
-            }}
-            folder={'pet-posts'}
-            cropping={false}
-            onSuccess={handleUploadSuccess}
-            onFailure={(error) => console.log(error)}
-            />
-        </CloudinaryContext>
+      
 
         {imageURL && (
           <div>
             <h2>Uploaded Image:</h2>
-            <Image
-              cloudName="your-cloudinary-cloud-name"
-              publicId={imageURL}
-              width="300"
-              crop="scale"
-              />
+          
           </div>
         )}
 
