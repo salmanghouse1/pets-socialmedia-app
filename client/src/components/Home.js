@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import PostList from './Posts/PostList';
-
-
+import 'bulma/css/bulma.min.css';
+import './../App.css';
 
 
 
@@ -57,13 +57,14 @@ const [image_hash,setImage_hash]= useState('');
     <>
     <section className="section">
       <div className="container">
-        <h1 className="title">Welcome to Pet Social Media</h1>
+        <h1 className="title is-primary">Welcome to Pet Social Media</h1>
         <p className="subtitle">Connect with other pet lovers!</p>
       </div>
       <div>
           <div>
       <h1>Create a Post for Your Pet</h1>
-      <form onSubmit={handleSubmit}>
+      <div className="card custom-shadow">
+      <form onSubmit={handleSubmit} className='card-content ispadding-medium'>
         <label htmlFor="pet-name">Pet's Name:</label>
         <input
           type="text"
@@ -106,8 +107,9 @@ const [image_hash,setImage_hash]= useState('');
         )}
 
         <br /><br />
-        <button type="submit">Submit</button>
+        <button className="button is-dark" type="submit">Submit</button>
       </form>
+        </div>
     </div>
       </div>
      <>
