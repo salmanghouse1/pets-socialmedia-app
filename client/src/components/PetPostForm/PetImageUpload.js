@@ -1,46 +1,38 @@
 import React, { useState } from 'react';
-import  from '';
+import axios from 'axios';
 
-const ImageUpload = () => {
-    const [file, setFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState('');
+function App() {
+  const [file, setFile] = useState(null);
+  const [message, setMessage] = useState('');
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('image', file);
+  const onFileUpload = async () => {
+    const formData = new FormData();
+    formData.append('image', file);
 
-        try {
-            const res = await .post('http://localhost:3000/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            const { image_id } = res.data;
-            setImageUrl(`http://localhost:3000/upload/${image_id}`);
-        } catch (error) {
-            alert('An error occurred while uploading the image.');
-        }
-    };
+    try {
+      const res = await axios.post('http://localhost:5000/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setMessage(`File uploaded successfully: ${res.data.filename}`);
+    } catch (err) {
+      setMessage('File upload failed');
+    }
+  };
 
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type="file" onChange={handleFileChange} />
-                <button type="submit">Upload Image</button>
-            </form>
-            {imageUrl && (
-                <div>
-                    <h3>Uploaded Image:</h3>
-                    <img src={imageUrl} alt="Uploaded" style={{ maxWidth: '100%' }} />
-                </div>
-            )}
-        </div>
-    );
-};
+  return (
+    <div className="App">
+      <h2>Image Upload</h2>
+      <input type="file" onChange={onFileChange} />
+      <button onClick={onFileUpload}>Upload!</button>
+      {message && <p>{message}</p>}
+    </div>
+  );
+}
 
-export default ImageUpload;
+export default App;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import  from '';
+import axios from 'axios';
 import ImageUpload from './PetImageUpload';
 
 const PetPostForm = () => {
@@ -17,7 +17,7 @@ const PetPostForm = () => {
     };
 
     try {
-      const response = await .post('', postData, {
+      const response = await axios.post('', postData, {
         headers: {
           'Content-Type': 'application/json',
         },
